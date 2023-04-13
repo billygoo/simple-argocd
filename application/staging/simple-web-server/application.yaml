@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: simple-web-demo-canary
+  namespace: argocd
+spec:
+  destination:
+    name: staging-eks
+    namespace: simple-web-server
+  project: default
+  source:
+    path: kustomize/overlays/staging
+    repoURL: https://github.com/billygoo/simple-web-server.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - Validate=true
+      - CreateNamespace=true
+      - PrunelPropagationPolicy=foreground
+      - PruneLast=true
+      - ApplyOutOfSyncOnly=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
