@@ -91,7 +91,19 @@ INFO[0006] Created bearer token secret for ServiceAccount "argocd-manager"
 Cluster 'https://yyyyyyyyyyyyyyyyyyyyyyyy.yl4.ap-northeast-2.eks.amazonaws.com' added
 ```
 
+# Application 배포하기 
+1. [application/staging/simple-web-server](application/staging/simple-web-server) 을 배포하기 위해서는 다음 두 가지 작업을 한다. 
+  1. application.yaml 은 `kubectl`을 이용해 배포한다. 
+  2. secret.sh 의 경우는 다음과 같이 환경변수를 이용해 배포 한다. 
+  ```bash
+  export GITHUB_TOKEN=xxxxxx
+  source secret.sh
+  ```
+
 # 고려사항 
 다음은 추후 운영 관리를 위해서 추가로 개선할 필요가 있는 항목들을 정리했다. 
 
 1. ArgoCD 계정 관리 연동을 이용한 권한 관리 추가
+2. rollout 배포시 자동으로 세팅 되도록 하는 방법 확인 
+
+
