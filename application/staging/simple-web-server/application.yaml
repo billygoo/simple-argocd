@@ -21,8 +21,8 @@ spec:
     repoURL: https://github.com/billygoo/simple-web-server.git
     targetRevision: main
   syncPolicy:
-    automated:
-      selfHeal: true
+    # automated:
+    #   selfHeal: true
     syncOptions:
       - Validate=true
       - CreateNamespace=true

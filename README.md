@@ -10,9 +10,16 @@ Argocd의 경우 테스트 프로젝트 이기 때문에 특별한 설정하지 
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
+# argocd notification & triggers (위에 초기 설치 버전에 다 추가되어 있음)
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-notifications/release-1.0/manifests/install.yaml
+
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-notifications/release-1.0/catalog/install.yaml
+
+
 # argocd rollout
 kubectl create namespace argo-rollouts
 kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
+
 
 # argocd CLI 설치 
 mkdir -p ~/.local/bin
@@ -89,6 +96,23 @@ INFO[0001] ClusterRole "argocd-manager-role" created
 INFO[0001] ClusterRoleBinding "argocd-manager-role-binding" created
 INFO[0006] Created bearer token secret for ServiceAccount "argocd-manager"
 Cluster 'https://yyyyyyyyyyyyyyyyyyyyyyyy.yl4.ap-northeast-2.eks.amazonaws.com' added
+```
+
+## Slack Token 배포하기 
+```bash
+# Slack Token 등록하기
+export SLACK_TOKEN=<your-slack-token>
+kubectl apply -n argocd -f - << EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: argocd-notifications-secret
+stringData:
+  slack-token: $SLACK_TOKEN
+EOF
+
+# slack 알림 등록하기
+kubectl patch cm argocd-notifications-cm -n argocd --type merge -p '{"data": {"service.slack": "{ token: $slack-token }" }}'
 ```
 
 # Application 배포하기 
