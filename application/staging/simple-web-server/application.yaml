@@ -3,6 +3,14 @@ kind: Application
 metadata:
   name: simple-web-demo-canary
   namespace: argocd
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: proj-smgu0327
+    notifications.argoproj.io/subscribe.on-sync-failed.slack: proj-smgu0327
+    notifications.argoproj.io/subscribe.on-sync-running.slack: proj-smgu0327
+    notifications.argoproj.io/subscribe.on-sync-status-unknown.slack: proj-smgu0327
+    notifications.argoproj.io/subscribe.on-health-degraded.slack: proj-smgu0327
+    notifications.argoproj.io/subscribe.on-deployed.slack: proj-smgu0327
+
 spec:
   destination:
     name: staging-eks
