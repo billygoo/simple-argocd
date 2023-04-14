@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: simple-web-demo
+  name: simple-web-canary-rollout
   namespace: argocd
   annotations:
     notifications.argoproj.io/subscribe.on-sync-succeeded.slack: proj-smgu0327
@@ -14,15 +14,15 @@ metadata:
 spec:
   destination:
     name: staging-eks
-    namespace: simple-web-server
+    namespace: simple-web-server-rollout
   project: default
   source:
-    path: kustomize/overlays/staging
+    path: kustomize/rollout
     repoURL: https://github.com/billygoo/simple-web-server.git
     targetRevision: main
   syncPolicy:
-    # automated:
-    #   selfHeal: true
+    automated:
+      selfHeal: true
     syncOptions:
       - Validate=true
       - CreateNamespace=true
